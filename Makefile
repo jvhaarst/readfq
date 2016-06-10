@@ -1,7 +1,12 @@
-all:kseq.h kseq_test.c
-		$(CC) -g -O2 kseq_test.c -o kseq_test -lz
-		$(CC) -g -O2 kseq_count.c -o kseq_count -lz
+CFLAGS=-g -O2
+  
+SRCS = $(wildcard *.c)
 
-clean:
-		rm -f *.o kseq_test kseq_count
+PROGS = $(patsubst %.c,%,$(SRCS))
 
+all: $(PROGS)
+
+%: %.c
+	$(CC) $(CFLAGS) -o $@ $< -lz
+clean: 
+	rm -f $(PROGS) *.o
