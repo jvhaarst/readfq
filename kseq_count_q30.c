@@ -8,7 +8,7 @@ int main(void)
     gzFile fp;
     kseq_t *seq;
     unsigned long long n = 0, slen = 0, q30 = 0, k=0;
-    double average;
+    double average, percentage_q30;
     int offset = 33, qual = 0;
     fp = gzdopen(fileno(stdin), "r");
     seq = kseq_init(fp);
@@ -23,8 +23,9 @@ int main(void)
         ++n, slen += seq->seq.l;
     }
     average = (double) slen / n;
+    percentage_q30= ((double) q30 / slen)*100;
 
-    printf("Number of sequences: %llu\tAverage length: %4.3f\tTotal number of bases: %llu\tNumber of bases >= Q30: %llu\n", n, average, slen, q30);
+    printf("Number of sequences: %llu\tAverage length: %4.3f\tTotal number of bases: %llu\tNumber of bases >= Q30: %llu (%4.3f%%)\n", n, average, slen, q30, percentage_q30);
 
     kseq_destroy(seq);
     gzclose(fp);
